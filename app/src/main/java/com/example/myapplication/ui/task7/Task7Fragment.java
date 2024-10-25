@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.task1;
+package com.example.myapplication.ui.task7;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import com.example.myapplication.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Task1Fragment#newInstance} factory method to
+ * Use the {@link Task7Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Task1Fragment extends Fragment {
+public class Task7Fragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class Task1Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Task1Fragment() {
+    public Task7Fragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class Task1Fragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Task1Fragment.
+     * @return A new instance of fragment Task7Fragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Task1Fragment newInstance(String param1, String param2) {
-        Task1Fragment fragment = new Task1Fragment();
+    public static Task7Fragment newInstance(String param1, String param2) {
+        Task7Fragment fragment = new Task7Fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class Task1Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_task1, container, false);
+        return inflater.inflate(R.layout.fragment_task7, container, false);
     }
 }
