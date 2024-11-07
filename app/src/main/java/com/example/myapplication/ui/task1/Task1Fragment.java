@@ -7,8 +7,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +66,29 @@ public class Task1Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_task1, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_task1, container, false);
+
+        Button theButton = rootView.findViewById(R.id.button);
+        EditText theEditText = rootView.findViewById(R.id.editTextText);
+        CheckBox theCheckBox = rootView.findViewById(R.id.checkBox);
+        theButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String inputText = theEditText.getText().toString();
+
+                if (theEditText.getText().toString().isEmpty()){
+                    inputText = "Nie wpisano tekstu";
+                }
+
+                if (theCheckBox.isChecked()){
+                    Toast.makeText(getActivity(), inputText, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Snackbar.make(rootView, inputText, Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        return rootView;
     }
 }

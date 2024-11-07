@@ -13,7 +13,7 @@
         <item
             android:id="@+id/task1"
             android:icon="@drawable/ic_menu_star"
-            android:title="@string/task" />
+            android:title="Task 1" />
         <item
             android:id="@+id/task2"
             android:icon="@drawable/ic_menu_star"
