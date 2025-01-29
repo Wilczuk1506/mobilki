@@ -6,10 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".QuizListView">
 
-    <ListView
-        android:id="@+id/lvQuestionsList"
+    <TextView
+        android:id="@+id/tvQuestion"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Sample Text"
+        android:textSize="30dp" />
+
+    <RadioGroup
+        android:id="@+id/rgAnwsers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>
