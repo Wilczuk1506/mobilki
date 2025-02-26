@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,6 +27,7 @@ public class MainActivity2 extends AppCompatActivity {
     Button btn_add;
     Button btn_remove;
     Button btn_edit;
+    Button btn_clear;
     EditText et_login;
     EditText et_password;
     EditText et_firstName;
@@ -35,6 +37,7 @@ public class MainActivity2 extends AppCompatActivity {
     ArrayList<String> logins;
     ArrayAdapter<String> adapter;
     User selecterUser = null;
+    int selectedPosition = -1;
     User currentUser;
 
     @Override
@@ -52,6 +55,7 @@ public class MainActivity2 extends AppCompatActivity {
         btn_add = findViewById(R.id.e2_btn_add);
         btn_remove = findViewById(R.id.e2_btn_remove);
         btn_edit = findViewById(R.id.e2_btn_edit);
+        btn_clear = findViewById(R.id.e2_btn_clear);
 
         et_login = findViewById(R.id.e2_et_login);
         et_password = findViewById(R.id.e2_et_password);
@@ -93,14 +97,37 @@ public class MainActivity2 extends AppCompatActivity {
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddUser();
+                User user = new User(
+                        et_firstName.getText().toString(),
+                        et_lastName.getText().toString(),
+                        "",
+                        et_password.getText().toString(),
+                        cb_isAdmin.isChecked()
+                );
+
+                if (GlobalData.getInstance().getUserByLogin(user.GetLogin()) != null) {
+                    Toast.makeText(MainActivity2.this, "User already exists", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                GlobalData.getInstance().addUser(user);
+                logins.add(user.GetFirstName() + (user.GetIsAdmin() ? " *" : " ") + user.GetLastName());
+
+                adapter.notifyDataSetChanged();
+
+                ClearInputs();
             }
         });
 
         btn_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                GlobalData.getInstance().removeUserByLogin(selecterUser.GetLogin());
+                logins.remove(selectedPosition);
+                selecterUser = null;
+                selectedPosition = -1;
+                ClearInputs();
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -108,6 +135,13 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+            }
+        });
+
+        btn_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClearInputs();
             }
         });
 
@@ -119,7 +153,7 @@ public class MainActivity2 extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                AreTextFieldsEmpty();
+                HandleButtonsEnable();
             }
 
             @Override
@@ -131,6 +165,21 @@ public class MainActivity2 extends AppCompatActivity {
         et_password.addTextChangedListener(textWatcher);
         et_firstName.addTextChangedListener(textWatcher);
         et_lastName.addTextChangedListener(textWatcher);
+
+        lv_loginList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                User user = GlobalData.getInstance().getUserByIndex(position);
+                if (user.GetLogin().equals("Admin")){
+                    Toast.makeText(MainActivity2.this, "Cannot access Head Admin Data", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    FillInputs(user);
+                    selecterUser = user;
+                    selectedPosition = position;
+                }
+            }
+        });
     }
 
     private void ExitToE1(){
@@ -139,42 +188,29 @@ public class MainActivity2 extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void AreTextFieldsEmpty(){
+    private void HandleButtonsEnable(){
         if (!(et_password.getText().toString().isBlank() || et_firstName.getText().toString().isBlank() || et_lastName.getText().toString().isBlank())){
             btn_add.setEnabled(et_login.getText().toString().isBlank());
         }
         else {
             btn_add.setEnabled(false);
         }
+        btn_remove.setEnabled(!et_login.getText().toString().isBlank());
     }
 
-    private void AddUser(){
-        User user = new User(
-                et_firstName.getText().toString(),
-                et_lastName.getText().toString(),
-                "",
-                et_password.getText().toString(),
-                cb_isAdmin.isChecked()
-        );
-
-        if (GlobalData.getInstance().getUserByLogin(user.GetLogin()) != null) {
-            Toast.makeText(MainActivity2.this, "User already exists", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        GlobalData.getInstance().addUser(user);
-        logins.add(user.GetFirstName() + (user.GetIsAdmin() ? " *" : " ") + user.GetLastName());
-
-        adapter.notifyDataSetChanged();
-
-        ClearInputs();
+    private void FillInputs(User user){
+        et_login.setText(user.GetLogin());
+        et_password.setText(user.GetPassword());
+        et_firstName.setText(user.GetFirstName());
+        et_lastName.setText(user.GetLastName());
+        cb_isAdmin.setChecked(user.GetIsAdmin());
     }
-
     private void ClearInputs(){
         et_firstName.setText("");
         et_lastName.setText("");
         et_login.setText("");
         et_password.setText("");
         cb_isAdmin.setChecked(false);
+        selecterUser = null;
     }
 }

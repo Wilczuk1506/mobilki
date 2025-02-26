@@ -23,12 +23,6 @@ public class GlobalData {
         userList.add(user);
     }
 
-    public void removeUserByIndex(int index){
-        if (index > 0 && index < userList.size()) {
-            userList.remove(index);
-        }
-    }
-
     public void removeUserByLogin(String login){
         if(!login.equals(userList.get(0).GetLogin())){
             userList.removeIf(user -> user.GetLogin().equals(login));
