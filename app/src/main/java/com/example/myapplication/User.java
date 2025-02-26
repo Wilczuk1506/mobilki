@@ -10,8 +10,11 @@ public class User {
     public User(String firstName, String lastName, String login, String password, Boolean isAdmin){
         this.firstName = firstName;
         this.lastName = lastName;
-        if(login.isEmpty()){
-            this.login = lastName.substring(0, 3) + firstName.substring(0, 3);
+        if(login.isBlank()){
+            String temp = "";
+            temp += lastName.length() < 3 ? lastName : lastName.substring(0, 3);
+            temp += firstName.length() < 3 ? firstName : firstName.substring(0, 3);
+            this.login = temp;
         }
         else {
             this.login = login;

@@ -39,6 +39,10 @@ public class GlobalData {
         return new ArrayList<>(userList);
     }
 
+    public int getSize(){
+        return userList.size();
+    }
+
     public User getUserByIndex(int index){
         if (index >= 0 && index < userList.size()){
             return userList.get(index);
