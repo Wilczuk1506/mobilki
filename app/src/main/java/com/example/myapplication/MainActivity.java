@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                             intent = new Intent(MainActivity.this, MainActivity3.class);
                         }
 
-                        intent.putExtra("currentIndex", GlobalData.getInstance().getIndexByLogin(currentUser.GetLogin()));
+                        intent.putExtra("currentLogin", currentUser.GetLogin());
 
                         startActivity(intent);
                     }

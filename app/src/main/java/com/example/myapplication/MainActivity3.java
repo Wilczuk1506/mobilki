@@ -33,7 +33,7 @@ public class MainActivity3 extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras != null){
-            User user = GlobalData.getInstance().getUserByIndex(extras.getInt("currentIndex"));
+            User user = GlobalData.getInstance().getUserByLogin(extras.getString("currentLogin"));
             tv_hello.setText("Welcome " + user.GetFirstName() + " " + user.GetLastName());
         }
 
@@ -41,7 +41,7 @@ public class MainActivity3 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity3.this, MainActivity.class);
-                intent.removeExtra("currentIndex");
+                intent.removeExtra("currentLogin");
                 startActivity(intent);
             }
         });

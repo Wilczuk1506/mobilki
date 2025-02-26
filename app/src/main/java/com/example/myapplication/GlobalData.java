@@ -10,7 +10,8 @@ public class GlobalData {
     private GlobalData() {
         userList = new ArrayList<>();
         userList.add(new User("Admin", "Admin", "Admin", "Admin", true));
-        userList.add(new User("test", "test", "test", "test", false));
+        userList.add(new User("test", "test", "test", "test", true));
+        userList.add(new User("test2", "test2", "test2", "test2", false));
     }
     public static GlobalData getInstance() {
         if (instance == null){
@@ -32,26 +33,11 @@ public class GlobalData {
     public List<User> getUsers(){
         return new ArrayList<>(userList);
     }
-
-    public int getSize(){
-        return userList.size();
-    }
-
     public User getUserByIndex(int index){
         if (index >= 0 && index < userList.size()){
             return userList.get(index);
         }
         return null;
-    }
-
-    public int getIndexByLogin(String login){
-        for (int i = 0; i < userList.size(); i++){
-            User user = userList.get(i);
-            if(user.GetLogin().equals(login)){
-                return i;
-            }
-        }
-        return -1;
     }
 
     public User getUserByLogin(String login){
@@ -61,5 +47,15 @@ public class GlobalData {
             }
         }
         return null;
+    }
+
+    public void replaceUserByLogin(String login, User newUser) {
+        for (int i = 0; i < userList.size(); i++) {
+            User currentUser = userList.get(i);
+            if (currentUser.GetLogin().equals(login)) {
+                userList.set(i, newUser);
+                break;
+            }
+        }
     }
 }

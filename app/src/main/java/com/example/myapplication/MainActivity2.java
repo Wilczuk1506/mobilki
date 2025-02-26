@@ -36,9 +36,9 @@ public class MainActivity2 extends AppCompatActivity {
     ListView lv_loginList;
     ArrayList<String> logins;
     ArrayAdapter<String> adapter;
-    User selecterUser = null;
+    User selectedUser = null;
     int selectedPosition = -1;
-    User currentUser;
+    User loggedInUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +66,11 @@ public class MainActivity2 extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras != null){
-            currentUser = GlobalData.getInstance().getUserByIndex(extras.getInt("currentIndex"));
+            loggedInUser = GlobalData.getInstance().getUserByLogin(extras.getString("currentLogin"));
+            Toast.makeText(MainActivity2.this, "Welcome " + loggedInUser.GetLogin(), Toast.LENGTH_SHORT).show();
         }
         else {
-            currentUser = null;
+            loggedInUser = null;
         }
 
         lv_loginList = findViewById(R.id.e2_lv_loginList);
@@ -122,19 +123,36 @@ public class MainActivity2 extends AppCompatActivity {
         btn_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GlobalData.getInstance().removeUserByLogin(selecterUser.GetLogin());
+                GlobalData.getInstance().removeUserByLogin(selectedUser.GetLogin());
                 logins.remove(selectedPosition);
-                selecterUser = null;
-                selectedPosition = -1;
-                ClearInputs();
                 adapter.notifyDataSetChanged();
+
+                if (loggedInUser.GetLogin().equals(selectedUser.GetLogin())) {
+                    ClearInputs();
+
+                    ExitToE1();
+                } else {
+                    ClearInputs();
+                }
             }
         });
 
         btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                User user = new User(
+                        et_firstName.getText().toString(),
+                        et_lastName.getText().toString(),
+                        et_login.getText().toString(),
+                        et_password.getText().toString(),
+                        cb_isAdmin.isChecked()
+                );
 
+                GlobalData.getInstance().replaceUserByLogin(selectedUser.GetLogin(), user);
+                logins.set(selectedPosition, user.GetFirstName() + (user.GetIsAdmin() ? " *" : " ") + user.GetLastName());
+                adapter.notifyDataSetChanged();
+
+                ClearInputs();
             }
         });
 
@@ -171,11 +189,11 @@ public class MainActivity2 extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 User user = GlobalData.getInstance().getUserByIndex(position);
                 if (user.GetLogin().equals("Admin")){
-                    Toast.makeText(MainActivity2.this, "Cannot access Head Admin Data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity2.this, "Cannot access Head Admin's data", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     FillInputs(user);
-                    selecterUser = user;
+                    selectedUser = user;
                     selectedPosition = position;
                 }
             }
@@ -184,7 +202,7 @@ public class MainActivity2 extends AppCompatActivity {
 
     private void ExitToE1(){
         Intent intent = new Intent(MainActivity2.this, MainActivity.class);
-        intent.removeExtra("currentIndex");
+        intent.removeExtra("currentLogin");
         startActivity(intent);
     }
 
@@ -196,6 +214,7 @@ public class MainActivity2 extends AppCompatActivity {
             btn_add.setEnabled(false);
         }
         btn_remove.setEnabled(!et_login.getText().toString().isBlank());
+        btn_edit.setEnabled(!et_login.getText().toString().isBlank());
     }
 
     private void FillInputs(User user){
@@ -206,11 +225,13 @@ public class MainActivity2 extends AppCompatActivity {
         cb_isAdmin.setChecked(user.GetIsAdmin());
     }
     private void ClearInputs(){
+        selectedUser = null;
+        selectedPosition = -1;
+
         et_firstName.setText("");
         et_lastName.setText("");
         et_login.setText("");
         et_password.setText("");
         cb_isAdmin.setChecked(false);
-        selecterUser = null;
     }
 }

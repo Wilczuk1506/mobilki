@@ -38,19 +38,4 @@ public class User {
     public Boolean GetIsAdmin(){
         return isAdmin;
     }
-    public void SetFirstName(String firstName){
-        this.firstName = firstName.trim();
-    }
-    public void SetLastName(String lastName){
-        this.lastName = lastName.trim();
-    }
-    public void SetLogin(String login){
-        this.login = login.trim();
-    }
-    public void SetPassword(String password){
-        this.password = password;
-    }
-    public void SetIsAdmin(Boolean isAdmin){
-        this.isAdmin = isAdmin;
-    }
 }
