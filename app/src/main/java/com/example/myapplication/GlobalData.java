@@ -5,6 +5,7 @@ import java.util.List;
 
 public class GlobalData {
     private static GlobalData instance;
+    private boolean firstLogin = true;
     private List<User> userList;
 
     private GlobalData() {
@@ -57,5 +58,13 @@ public class GlobalData {
                 break;
             }
         }
+    }
+
+    public boolean getFirstLogin(){
+        return firstLogin;
+    }
+
+    public void setFirstLogin(boolean newLogin){
+        firstLogin = newLogin;
     }
 }

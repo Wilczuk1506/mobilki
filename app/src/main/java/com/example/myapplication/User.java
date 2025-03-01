@@ -38,4 +38,7 @@ public class User {
     public Boolean GetIsAdmin(){
         return isAdmin;
     }
+    public void SetPassword(String newPassword){
+       this.password = newPassword;
+    }
 }

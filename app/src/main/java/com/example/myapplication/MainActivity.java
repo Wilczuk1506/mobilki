@@ -51,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
                             intent = new Intent(MainActivity.this, MainActivity3.class);
                         }
 
+                        //First time Head Admin login
+                        if(currentUser.GetLogin().equals("Admin") && GlobalData.getInstance().getFirstLogin()){
+                            intent = new Intent(MainActivity.this, MainActivity4.class);
+                        }
+
                         intent.putExtra("currentLogin", currentUser.GetLogin());
 
                         startActivity(intent);
